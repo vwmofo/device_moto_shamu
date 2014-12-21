@@ -370,6 +370,10 @@ PRODUCT_PACKAGES += \
     Tag \
     android.hardware.nfc@1.0-impl
 
+# NFCEE access control
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/nfcee_access.xml:system/etc/nfcee_access.xml
+
 PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.nfc.xml:system/etc/permissions/android.hardware.nfc.xml \
     frameworks/native/data/etc/android.hardware.nfc.hce.xml:system/etc/permissions/android.hardware.nfc.hce.xml \
