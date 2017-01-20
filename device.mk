@@ -227,7 +227,10 @@ PRODUCT_PROPERTY_OVERRIDES += \
     fmas.spkr_angles=10 \
     fmas.spkr_sgain=0
 
+#CAMERA
 PRODUCT_PACKAGES += \
+    android.hardware.camera.device@3.2-impl \
+    android.hardware.camera.provider@2.4-impl \
     libqomx_core \
     libmmcamera_interface \
     libmmjpeg_interface \
