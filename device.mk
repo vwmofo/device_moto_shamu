@@ -19,6 +19,15 @@
 #
 # Everything in this directory will become public
 
+ifeq ($(TARGET_PREBUILT_KERNEL),)
+LOCAL_KERNEL := device/moto/shamu-kernel/zImage-dtb
+else
+LOCAL_KERNEL := $(TARGET_PREBUILT_KERNEL)
+endif
+
+
+PRODUCT_COPY_FILES := \
+    $(LOCAL_KERNEL):kernel
 
 PRODUCT_COPY_FILES += \
     device/moto/shamu/init.shamu.rc:root/init.shamu.rc \
@@ -104,6 +113,7 @@ PRODUCT_COPY_FILES += \
 # Bluetooth HAL
 PRODUCT_PACKAGES += \
     libbt-vendor \
+    android.hardware.bluetooth@1.0-service \
     android.hardware.bluetooth@1.0-impl
 
 # For SPN display
@@ -344,6 +354,11 @@ PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
     persist.camera.ois.disable=0
 
+# GNSS HAL
+PRODUCT_PACKAGES += \
+    android.hardware.gnss@1.0-service \
+    android.hardware.gnss@1.0-impl
+
 # GPS configuration
 PRODUCT_COPY_FILES += \
     device/moto/shamu/gps.conf:system/etc/gps.conf
@@ -367,7 +382,9 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     nfc_nci.bcm2079x.default \
     NfcNci \
+    nfc_nci.shamu \
     Tag \
+    android.hardware.nfc@1.0-service \
     android.hardware.nfc@1.0-impl
 
 # NFCEE access control
