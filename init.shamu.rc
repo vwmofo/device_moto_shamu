@@ -140,6 +140,14 @@ on boot
     chown bluetooth bluetooth /sys/devices/platform/msm_serial_hs.0/clock
     chmod 0660 /sys/devices/platform/msm_serial_hs.0/clock
 
+    # add a cpuset for the camera daemon
+    # we want all the cores for camera
+    mkdir /dev/cpuset/camera-daemon
+	write /dev/cpuset/camera-daemon/mems 0
+    chown system system /dev/cpuset/camera-daemon
+    chown system system /dev/cpuset/camera-daemon/tasks
+    chmod 0664 /dev/cpuset/camera-daemon/tasks
+
     # update foreground cpuset now that processors are up
     # reserve CPU 3 for the top app
     write /dev/cpuset/foreground/cpus 0-2
@@ -147,6 +155,7 @@ on boot
     write /dev/cpuset/background/cpus 0
     write /dev/cpuset/system-background/cpus 0-1
     write /dev/cpuset/top-app/cpus 0-3
+    write /dev/cpuset/camera-daemon/cpus 0-3
 
     chmod 0660 /dev/ttyHS2
     chown bluetooth bluetooth /dev/ttyHS2
@@ -411,7 +420,7 @@ on property:ro.use_data_netmgrd=false
 on property:ro.data.large_tcp_window_size=true
     write /proc/sys/net/ipv4/tcp_adv_win_scale  2
 
-service wpa_supplicant /system/bin/wpa_supplicant \
+service wpa_supplicant /system/vendor/bin/hw/wpa_supplicant \
     -iwlan0 -Dnl80211 -c/data/misc/wifi/wpa_supplicant.conf \
     -I/system/etc/wifi/p2p_supplicant_overlay.conf  \
     -puse_p2p_group_interface=1p2p_device=1 \
@@ -493,6 +502,7 @@ service qcamerasvr /system/bin/mm-qcamera-daemon
     class late_start
     user camera
     group camera system inet input graphics
+    writepid /dev/cpuset/camera-daemon/tasks
 
 service bdAddrLoader /system/bin/bdAddrLoader -p ro.boot.btmacaddr -s -x
     class main

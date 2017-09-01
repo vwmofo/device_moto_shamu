@@ -93,6 +93,7 @@ PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.opengles.aep.xml:system/etc/permissions/android.hardware.opengles.aep.xml \
     frameworks/native/data/etc/android.software.midi.xml:system/etc/permissions/android.software.midi.xml
 
+
 # HIDL
 PRODUCT_COPY_FILES += \
     device/moto/shamu/manifest.xml:system/vendor/manifest.xml
@@ -112,9 +113,14 @@ $(call inherit-product-if-exists, hardware/broadcom/wlan/bcmdhd/firmware/bcm4356
 PRODUCT_COPY_FILES += \
     device/moto/shamu/bcmdhd.cal:system/etc/wifi/bcmdhd.cal
 
+#BT Hail Mary
+PRODUCT_COPY_FILES += \
+    device/moto/shamu/bt_vendor.conf:system/etc/bluetooth/bt_vendor.conf \
+    device/moto/shamu/libbt-vendor.so:system/vendor/lib/libbt-vendor.so    
+
 # BT FW
 PRODUCT_COPY_FILES += \
-    device/moto/shamu/bluetooth/BCM4356A2_001.003.015.0077.0214_ORC.hcd:$(TARGET_COPY_OUT_VENDOR)/firmware/bcm4354A2.hcd
+    device/moto/shamu/bluetooth/BCM4356A2_001.003.015.0077.0214_ORC.hcd:$(TARGET_COPY_OUT_VENDOR)/firmware/bcm4354A2.hcd 
 
 # Bluetooth HAL
 PRODUCT_PACKAGES += \
@@ -246,15 +252,13 @@ PRODUCT_PACKAGES += \
 
 # Bluetooth
 PRODUCT_PACKAGES += \
+    android.hardware.bluetooth@1.0-service \
     android.hardware.bluetooth@1.0-impl
 
 # Camera
 PRODUCT_PACKAGES += \
-    Camera2 \
-    camera.device@3.2-impl \
-    android.hardware.camera.provider@2.4-impl
-
-PRODUCT_PACKAGES += \
+    android.hardware.camera.device@3.2-impl \
+    android.hardware.camera.provider@2.4-impl \
     libqomx_core \
     libmmcamera_interface \
     libmmjpeg_interface \
@@ -267,7 +271,8 @@ PRODUCT_PACKAGES += \
 
 # Keymaster HAL
 PRODUCT_PACKAGES += \
-    android.hardware.keymaster@3.0-impl
+    android.hardware.keymaster@3.0-impl \
+    android.hardware.keymaster@3.0-service
 
 PRODUCT_PACKAGES += \
     lights.shamu \
@@ -345,7 +350,9 @@ PRODUCT_PROPERTY_OVERRIDES += \
 # LTE, CDMA, GSM/WCDMA
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.telephony.default_network=10 \
-    telephony.lteOnCdmaDevice=1
+    telephony.lteOnCdmaDevice=1 \
+    persist.radio.mode_pref_nv10=1 \
+    ro.telephony.get_imsi_from_sim=true
 
 # SIM based FSG loading & MCFG activation
 PRODUCT_PROPERTY_OVERRIDES += \
@@ -364,6 +371,7 @@ PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
 
 # GNSS HAL
 PRODUCT_PACKAGES += \
+    android.hardware.gnss@1.0-service \
     android.hardware.gnss@1.0-impl
 
 # GPS configuration
@@ -393,8 +401,14 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     nfc_nci.bcm2079x.default \
     NfcNci \
+    nfc_nci.shamu \
     Tag \
+    android.hardware.nfc@1.0-service \
     android.hardware.nfc@1.0-impl
+
+# NFCEE access control
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/nfcee_access.xml:system/etc/nfcee_access.xml
 
 PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.nfc.xml:system/etc/permissions/android.hardware.nfc.xml \
@@ -521,6 +535,16 @@ PRODUCT_PROPERTY_OVERRIDES += \
     persist.audio.fluence.voicecomm=false \
     persist.audio.fluence.voicerec=false \
     persist.audio.fluence.speaker=false
+
+# Rich Communications Service is disabled
+PRODUCT_PROPERTY_OVERRIDES += \
+    persist.rcs.supported=0
+
+# WiFi calling
+PRODUCT_PROPERTY_OVERRIDES += \
+    persist.data.iwlan.enable=true \
+    persist.radio.ignore_ims_wlan=1 \
+    persist.radio.data_con_rprt=1
 
 # OEM Unlock reporting
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \

@@ -66,11 +66,7 @@ WIFI_BUS := PCIE
 
 #Bluetooth defines
 BOARD_HAVE_BLUETOOTH_BCM := true
-ifeq ($(TARGET_PRODUCT),bt_shamu)
 BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR := device/moto/shamu/bluetooth_extra
-else
-BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR := device/moto/shamu/bluetooth
-endif
 
 TARGET_USES_HWC2 := true
 SF_START_GRAPHICS_ALLOCATOR_SERVICE := true
