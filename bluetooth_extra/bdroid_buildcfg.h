@@ -19,7 +19,7 @@
 
 #define BTM_WBS_INCLUDED TRUE
 #define BTIF_HF_WBS_PREFERRED TRUE
-//#define BLE_VND_INCLUDED TRUE
+#define BLE_VND_INCLUDED TRUE
 
 /* Handsfree device */
 #define BTA_DM_COD {0x20, 0x04, 0x08}
