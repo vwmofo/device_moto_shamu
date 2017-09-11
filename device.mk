@@ -238,11 +238,6 @@ PRODUCT_PROPERTY_OVERRIDES += \
     fmas.spkr_angles=10 \
     fmas.spkr_sgain=0
 
-# Bluetooth
-PRODUCT_PACKAGES += \
-    libbt-vendor \
-    android.hardware.bluetooth@1.0-impl
-
 # Camera
 PRODUCT_PACKAGES += \
     Camera2 \
@@ -390,13 +385,8 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     com.android.nfc_extras \
     nfc_nci.bcm2079x.default \
-    libnfc-nci \
-    libnfc \
-    libnfc_jni \
     NfcNci \
-#    nfc_nci.shamu \
     Tag \
-#    android.hardware.nfc@1.0-service \
     android.hardware.nfc@1.0-impl
 
 # NFCEE access control
