@@ -53,9 +53,6 @@ BOARD_EGL_CFG := device/moto/shamu/egl.cfg
 
 BOARD_USES_ALSA_AUDIO := true
 
-# NFC
-BOARD_NFC_HAL_MODULE := BCM2079X
-
 # Wifi related defines
 WPA_SUPPLICANT_VERSION      := VER_0_8_X
 BOARD_WLAN_DEVICE           := bcmdhd
